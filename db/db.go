@@ -6,7 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/jmoiron/sqlx"
-	//"github.com/lib/pq" // PostgreSQL driver
+	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 
