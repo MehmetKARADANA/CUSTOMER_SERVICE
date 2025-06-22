@@ -19,7 +19,12 @@ func GetApp(db db.PostgresDB) *App {
 
 func (a *App) PostHandler(c *gin.Context) {
 	
-	c.JSON(201, gin.H{"message": "Customer created"})
+	status,customer, err := createCustomer(a.db,c)
+	if err != nil {
+		c.JSON(status, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(status, customer)
 }
 
 func (a *App) GetHandler(c *gin.Context) {

@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 
 type PostgresDB struct{
-	db *sqlx.DB
+	DB *sqlx.DB
 }
 func GetDB(secrets map[string]string) *PostgresDB {
 	db := createDB(secrets)
 
 	return &PostgresDB{
-		db: db,
+		DB: db,
 	}
 }
 
@@ -36,7 +36,8 @@ func createDB(secrets map[string]string) *sqlx.DB {
 		dbHost,
 		dbPort,	
 		secrets["username"],
-		secrets["password"]	)
+		secrets["password"],
+		)
 
 	db, err := sqlx.Connect("postgres", connectionString)
 	if err != nil {
@@ -44,6 +45,15 @@ func createDB(secrets map[string]string) *sqlx.DB {
 		return nil
 	}	
 
-
+	// Create customers table
+	createTableSQL := `
+	CREATE TABLE customers (
+	    id SERIAL PRIMARY KEY,
+	    name VARCHAR(255),
+	    email VARCHAR(255) UNIQUE,
+	    address VARCHAR(255)
+	);
+	`
+	_, err = db.Exec(createTableSQL)
 	return db 
 }
