@@ -17,10 +17,10 @@ func main(){
 
 	r := gin.Default()
 	
-	r.POST("/customer", a.PostHandler)
-	r.GET("/customer/:customerId", a.GetHandler)
-	r.PUT("/customer/customerId", a.PutHandler)
-	r.DELETE("/customer/customerId", a.DeleteHandler)	
+	r.POST("/customers", a.PostHandler)
+	r.GET("/customers/:customerId", a.GetHandler)
+	r.PUT("/customers/:customerId", a.PutHandler)
+	r.DELETE("/customers/:customerId", a.DeleteHandler)	
 
 	r.Run(":8080") // Start the server on port 8080
 }

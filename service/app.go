@@ -28,16 +28,31 @@ func (a *App) PostHandler(c *gin.Context) {
 }
 
 func (a *App) GetHandler(c *gin.Context) {
-	customerId := c.Param("customerId")
-	c.JSON(200, gin.H{"message": "Customer retrieved", "customerId": customerId})
+	status, customer, err := getCustomer(a.db, c)
+	if err != nil {
+		c.JSON(status, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(status, customer)
 }
 
 func (a *App) PutHandler(c *gin.Context) {
-	customerId := c.Param("customerId")
-	c.JSON(200, gin.H{"message": "Customer updated", "customerId": customerId})
+	status, customer, err := updateCustomer(a.db, c)
+	if err != nil {
+		c.JSON(status, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(status, customer)
 }
 
 func (a *App) DeleteHandler(c *gin.Context) {
-	customerId := c.Param("customerId")
-	c.JSON(200, gin.H{"message": "Customer deleted", "customerId": customerId})
+	status, err := deleteCustomer(a.db, c)
+	if err != nil {
+		c.JSON(status, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(status, nil)
 }
